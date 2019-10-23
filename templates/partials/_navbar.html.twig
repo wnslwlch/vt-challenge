@@ -1,0 +1,27 @@
+<header>
+    <div class="container-fluid p-0 m-0">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand d-flex align-items-center" href="http://vaadd.cf/">
+                <img src="{{ asset('dist/img/logo_vaadd1.png') }}" width="40" height="30"
+                    class="d-inline-block align-top mr-3" alt="logo-VAADD">
+                VAADD
+            </a>
+            <a class="nav-link" href="{{ path('app_index')}}">
+                <img src="{{ asset('dist/img/tc_acceuil.png') }}" width="100" class="d-inline-block align-top mr-3"
+                    alt="Accueil"></a>
+            {% if app.user %}
+            <a class="nav-link" href="{{ path('plant_new')}}">Ajouter arbre</a>
+            <a class="nav-link" href="{{ path('plant_index')}}">Voir mes arbres</a>
+            <a class="nav-link" href="{{ path('app_logout')}}">Deconnexion</a>
+
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin_index') }}"><strong>Espace adminstrateur</strong></a>
+            {% endif %}
+
+            {% else %}
+            <a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
+            <a class="nav-link" href="{{ path('app_register')}}">Créer un compte</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>

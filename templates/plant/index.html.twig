@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plant index{% endblock %}
+
+{% block body %}
+
+<header>
+
+    <div class="container">
+        <div class="row profile justify-content-center">
+            <div class="col-8">
+                <div class="profile-user-settings d-flex flex-wrap justify-content-center">
+                    <h1 class="profile-user-name">{{ user.firstname }} {{ user.name }}</h1>
+                </div>
+                <div class="text-center">
+                    <h2>{{ user.organization }}</h2>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="profile-stats">
+
+                    {% if photoCount > 0 %}
+                    <ul>
+                        <li>Vos <span class="profile-stat-count">{{ photoCount }}</span> photos
+                            contenant <span class="profile-stat-count">{{ plantsCount }}</span> plants d'arbres !</li>
+                    </ul>
+                    {% else %}
+
+                        <div class="text-center">
+                            <a class="text-center btn btn-vaadd-orange btn-lg" href="{{ path('plant_new')}}">Ajoutez
+                                votre première photo !</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End of profile section -->
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="row">
+            {% for plant in plants %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="gallery-item" tabindex="0" style="height:300px">
+                    <a data-toggle="modal" data-target="#plant-{{ plant.id }}">
+                        <img src="{{ asset('dist/images/plant/' ~ plant.getImage1()) }}" class="gallery-image" alt="">
+                        <div class="gallery-item-info">
+                            <ul>
+                                <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
+                                        class="fas fa-heart" aria-hidden="true"></i> {{ plant.nbLikes }}</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal fade" id="plant-{{ plant.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="plant-{{ plant.id }}Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="plant-{{ plant.id }}Label">{{ user.organization }} -
+                                {{ plant.region }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-center">
+                                <div class="d-lg-inline-flex">
+                                    <div class="modal-images text-center" tabindex="0">
+                                        <img src="{{ asset('dist/images/plant/' ~ plant.getImage1()) }}"
+                                            class="gallery-image" alt="">
+                                    </div>
+                                    <!--<img src="{# asset('dist/images/plant/' ~ plant.getImage2()) #}"
+                                        <div class="modal-images text-center" tabindex="0">
+                                            class="gallery-image" alt="">
+                                    </div>-->
+                                </div>
+                            </div>
+                            <div class="row">
+                                        <div class="col-10 ml-lg-5 d-flex justify-content-end">
+                                            {# TODO:  Ajouter une condition if image par défaut alors affiche le lien, sinon n'affiche pas de lien#}
+                                            {# <a href="#">Ajouter une seconde image</a> #}
+                                        </div>
+                                    </div>
+                            <div>
+                                <div class="modal-image-information">
+                                    {% if (app.user and is_granted('ROLE_ADMIN') ) or (app.user and plant.user.id == app.user.id) %}
+                                    <form method="post" action="{{ path('plant_delete', {'id': plant.id}) }}"
+                                        onsubmit="return confirm('Êtes-vous sûrs de vouloir supprimer cette image ?');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token"
+                                            value="{{ csrf_token('delete' ~ plant.id) }}">
+                                        <button type="submit" class="text-center btn btn-danger btn-lg">Supprimer la
+                                            photo</button>
+                                    </form>
+                                    {% endif %}
+                                    <div class="row mb-4">
+                                        <div class="col-2 col-lg-2 d-flex justify-content-end">
+                                            <a href="{{ path('plant_like', { id : plant.id })}}" class="icon-likes">
+                                                <i class="far fa-heart"></i>
+                                            </a>
+                                        </div> {{ plant.nbLikes }} likes
+                                        <div class="col-10 col-lg-4 d-flex align-items-end justify-content-end">
+                                            <img src="{{ asset('dist/img/calendar.svg') }}" alt="Date de plantation"
+                                                class="icon-plantation">
+                                            <span>{{ plant.createdAt1 ? plant.createdAt1|date('d-m-Y') : '' }}</span>
+                                        </div>
+                                        <!-- <div class="col-12 col-lg-5 pr-lg-5 d-flex align-items-end justify-content-end">
+                                            <img src="{# asset('dist/img/calendar.svg') #}" alt="Date de plantation"
+                                                class="icon-plantation">
+                                            <span>{# plant.createdAt2 ? plant.createdAt2|date('d-m-Y') : '' #}</span>
+                                        </div> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6 d-flex align-items-end justify-content-end">
+                                            <img src="{{ asset('dist/img/pin.svg') }}" alt="Lieu de plantation"
+                                                class="icon-plantation">
+                                            <span>{{ plant.region }}, {{ plant.prefecture }},
+                                                {{ plant.locality }}</span>
+                                        </div>
+                                        <div class="col-12 col-lg-5 pr-lg-5 d-flex align-items-end justify-content-end">
+                                            <img src="{{ asset('dist/img/tree.svg') }}" alt="Nombre d'arbres plantés"
+                                                class="icon-plantation">
+                                            <!-- <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from
+                                                            <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is
+                                                            licensed by <a href="http://creativecommons.org/licenses/by/3.0/"
+                                                                title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+                                            <span>{{ plant.nbPlants }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <!-- End of gallery -->
+    {# <div class="loader"></div> #}
+    </div>
+
+
+</main>
+
+{#
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Region</th>
+                <th>Prefecture</th>
+                <th>Locality</th>
+                <th>Nb_plants</th>
+                <th>Nb_likes</th>
+                <th>Image_1</th>
+                <th>Image_2</th>
+                <th>Created_at1</th>
+                <th>Created_at2</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for plant in plants %}
+            <tr>
+                <td>{{ plant.id }}</td>
+                <td>{{ plant.region }}</td>
+                <td>{{ plant.prefecture }}</td>
+                <td>{{ plant.locality }}</td>
+                <td>{{ plant.nbPlants }}</td>
+                <td>{{ plant.nbLikes }}</td>
+                <td>{{ plant.image1 }}</td>
+                <td>{{ plant.image2 }}</td>
+                <td>{{ plant.createdAt1 ? plant.createdAt1|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ plant.createdAt2 ? plant.createdAt2|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('plant_show', {'id': plant.id}) }}">show</a>
+                    <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> #}
+{% endblock %}

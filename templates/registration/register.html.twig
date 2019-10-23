@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-4">
+        <h1 class="mb-5 mt-4">S'enregistrer</h1>
+
+        {{ form_start(registrationForm) }}
+            {{ form_widget(registrationForm) }}
+            <button class="btn btn-primary profile-edit-btn mb-5 text-white">Valider</button>
+        {{ form_end(registrationForm) }}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

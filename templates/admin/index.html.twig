@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue dans le Tree Challenge !{% endblock %}
+
+{% block body %}
+
+<div class="container mt-3">
+    <h1>Dashboard admin !</h1>
+
+    <form action="{{ path('admin_config')}}" method="POST">
+        <input type="hidden" name="token" value="{{ csrf_token('admin-config-token') }}">
+        {% for key in keys %}
+            <div class="form-group">
+                <label for="key-{{key.id}}">{{ key.name }}</label>
+                <input id="key-{{key.id}}" type="date" class="form-control" name="{{key.id}}" value="{{ key.cvalue }}">
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-warning">Modifier</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+$theme-colors: ("primary": #F97E42,
+"vaadd-cyan": #008080,
+"vaadd-green": #008000,
+"vaadd-orange": #ff6600,
+"vaadd-blue": #37abc8,
+"vaadd-yellow": #ffcc00,
+);
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';

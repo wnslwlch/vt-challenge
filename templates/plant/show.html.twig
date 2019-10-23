@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plant{% endblock %}
+
+{% block body %}
+    <h1>Plant</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ plant.id }}</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>{{ plant.region }}</td>
+            </tr>
+            <tr>
+                <th>Prefecture</th>
+                <td>{{ plant.prefecture }}</td>
+            </tr>
+            <tr>
+                <th>Locality</th>
+                <td>{{ plant.locality }}</td>
+            </tr>
+            <tr>
+                <th>Nb_plants</th>
+                <td>{{ plant.nbPlants }}</td>
+            </tr>
+            <tr>
+                <th>Nb_likes</th>
+                <td>{{ plant.nbLikes }}</td>
+            </tr>
+            <tr>
+                <th>Image_1</th>
+                <td>{{ plant.image1 }}</td>
+            </tr>
+            <tr>
+                <th>Image_2</th>
+                <td>{{ plant.image2 }}</td>
+            </tr>
+            <tr>
+                <th>Created_at1</th>
+                <td>{{ plant.createdAt1 ? plant.createdAt1|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Created_at2</th>
+                <td>{{ plant.createdAt2 ? plant.createdAt2|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('plant_index') }}">back to list</a>
+
+    <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
+
+    {{ include('plant/_delete_form.html.twig') }}
+{% endblock %}
